@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/Lasiar/elecard/base"
@@ -19,9 +20,10 @@ type API struct {
 	Method string           `json:"method"`
 	Params *[]square.Square `json:"params"`
 	debug  bool
+	logger *log.Logger
 }
 
-func New(key string) API { return API{Key: key} }
+func New(key string) API { return API{Key: key, logger: log.New(os.Stderr, "[DEBUG]", 0)} }
 
 type errorResponse struct {
 	Code    int    `json:"code"`
@@ -50,6 +52,7 @@ func (api *API) SetDebug(isDebug bool) {
 	api.debug = isDebug
 }
 
+// CheckResult sends data to check
 func (api API) CheckResult(result []square.Square) ([]bool, error) {
 	api.Method = "CheckResults"
 	var js []square.Square
@@ -107,12 +110,12 @@ func (api *API) do() (io.Reader, error) {
 		return nil, errors.New("non 200")
 	}
 	if api.debug {
-		fmt.Println(string(query))
+		api.logger.Printf("request: %s", string(query))
 		var buf bytes.Buffer
 		if _, err := buf.ReadFrom(resp.Body); err != nil {
 			return nil, err
 		}
-		log.Println(buf.String())
+		api.logger.Println("response: $s", buf.String())
 		return &buf, nil
 	}
 	return resp.Body, nil
