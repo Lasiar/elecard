@@ -5,16 +5,19 @@ import (
 	"strings"
 )
 
+// Circle implementation circle
 type Circle struct {
 	Cord
 	Radius json.Number `json:"radius"`
 }
 
+// Square implementation square
 type Square struct {
 	LeftBottom Cord `json:"left_bottom"`
 	RightTop   Cord `json:"right_top"`
 }
 
+// Cord implementation 2d coordinates
 type Cord struct {
 	X json.Number `json:"x"`
 	Y json.Number `json:"y"`

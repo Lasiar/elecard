@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/Lasiar/elecard/base"
@@ -23,7 +24,18 @@ func main() {
 		}
 		*result = append(*result, square.CalcBig(task))
 	}
-	if _, err := api.CheckResult(*result); err != nil {
+	check, err := api.CheckResult(*result)
+	if err != nil {
 		log.Println(err)
+	}
+	flag := true
+	for i, ch := range check {
+		if !ch {
+			flag = false
+			fmt.Printf("invalid test: %d\n", i+1)
+		}
+	}
+	if flag {
+		fmt.Println("Все тесты пройдены")
 	}
 }
