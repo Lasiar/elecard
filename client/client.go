@@ -15,6 +15,7 @@ import (
 	"github.com/Lasiar/elecard/square"
 )
 
+// API struct for work with API
 type API struct {
 	Key    string           `json:"key"`
 	Method string           `json:"method"`
@@ -23,8 +24,10 @@ type API struct {
 	logger *log.Logger
 }
 
+// New Get api
 func New(key string) API { return API{Key: key, logger: log.New(os.Stderr, "[DEBUG]", 0)} }
 
+// errorResponse handing error api
 type errorResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
@@ -33,21 +36,11 @@ type errorResponse struct {
 func (e errorResponse) error() error {
 	if e.Message == "" {
 		return nil
-	} else {
-		return fmt.Errorf("[%d] %s", e.Code, e.Message)
 	}
+	return fmt.Errorf("[%d] %s", e.Code, e.Message)
 }
 
-type CordUint struct {
-	X uint64 `json:"-"`
-	Y uint64 `json:"-"`
-}
-
-type CordJson struct {
-	X json.Number `json:"x"`
-	Y json.Number `json:"y"`
-}
-
+// SetDebug print request and response on Stderr
 func (api *API) SetDebug(isDebug bool) {
 	api.debug = isDebug
 }
@@ -79,6 +72,7 @@ func (api API) CheckResult(result []square.Square) ([]bool, error) {
 	return response.Result, response.Error.error()
 }
 
+// GetTask get task from server
 func (api API) GetTask() (*[][]square.Circle, error) {
 	api.Method = "GetTasks"
 	resp, err := api.do()

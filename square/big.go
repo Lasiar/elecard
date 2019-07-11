@@ -5,7 +5,8 @@ import (
 	"math/big"
 )
 
-func Calc(task []Circle) Square {
+// CalcBig calc if circle only integer
+func CalcBig(task []Circle) Square {
 	mxrtx := big.Int{}
 	mxrty := big.Int{}
 	mnlbx := big.Int{}

@@ -9,21 +9,21 @@ import (
 )
 
 func main() {
-	a := client.New(base.GetConfig().Key)
-	a.SetDebug(base.GetConfig().Debug)
-	tasks, err := a.GetTask()
+	api := client.New(base.GetConfig().Key)
+	api.SetDebug(base.GetConfig().Debug)
+	tasks, err := api.GetTask()
 	if err != nil {
 		log.Fatal(err)
 	}
 	result := new([]square.Square)
 	for _, task := range *tasks {
 		if square.IsFloat(task) {
-			*result = append(*result, square.CalcF(task))
+			*result = append(*result, square.CalcFloat(task))
 			continue
 		}
-		*result = append(*result, square.Calc(task))
+		*result = append(*result, square.CalcBig(task))
 	}
-	if _, err := a.CheckResult(*result); err != nil {
+	if _, err := api.CheckResult(*result); err != nil {
 		log.Println(err)
 	}
 }

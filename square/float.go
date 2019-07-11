@@ -5,7 +5,8 @@ import (
 	"strconv"
 )
 
-func CalcF(task []Circle) Square {
+// CalcFloat calc with circle have float
+func CalcFloat(task []Circle) Square {
 	var (
 		mxrtx,
 		mxrty,
