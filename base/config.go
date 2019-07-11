@@ -15,8 +15,9 @@ var (
 )
 
 type Config struct {
-	Key string `json:"key"`
-	URL string `json:"url"`
+	Key   string `json:"key"`
+	URL   string `json:"url"`
+	Debug bool   `json:"debug"`
 }
 
 func (c *Config) load() {
